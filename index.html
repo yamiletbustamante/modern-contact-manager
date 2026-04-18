@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Contactos</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ═══════════════════════
+       SIDEBAR
+  ═══════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo"><i class="ri-contacts-book-2-fill"></i></div>
+            <span class="brand-text">Modern <strong>Contact Manager</strong></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="nav-item active" data-page="contacts" href="#">
+                <i class="ri-user-3-line"></i><span>Contactos</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <button class="theme-btn" id="themeToggle">
+                <i class="ri-moon-line" id="themeIcon"></i>
+                <span id="themeLabel">Modo oscuro</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════
+       MAIN
+  ═══════════════════════ -->
+    <div class="main-wrap">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="topbar-end">
+                <div class="user-chip" id="userChip">
+                    <div class="user-av" id="userAv">?</div>
+                    <div class="user-info">
+                        <span class="u-name" id="userName">Usuario</span>
+                        <span class="u-role" id="userEmail">Sin sesión</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="page">
+
+            <!-- STATS -->
+            <div class="stats-row">
+                <div class="stat-card c-green">
+                    <div class="stat-ico"><i class="ri-user-3-line"></i></div>
+                    <div>
+                        <div class="stat-n" id="sTotal">0</div>
+                        <div class="stat-l">Total</div>
+                    </div>
+                </div>
+                <div class="stat-card c-yellow">
+                    <div class="stat-ico"><i class="ri-star-fill"></i></div>
+                    <div>
+                        <div class="stat-n" id="sFav">0</div>
+                        <div class="stat-l">Favoritos</div>
+                    </div>
+                </div>
+                <div class="stat-card c-blue">
+                    <div class="stat-ico"><i class="ri-briefcase-line"></i></div>
+                    <div>
+                        <div class="stat-n" id="sWork">0</div>
+                        <div class="stat-l">Trabajo</div>
+                    </div>
+                </div>
+                <div class="stat-card c-teal">
+                    <div class="stat-ico"><i class="ri-home-heart-line"></i></div>
+                    <div>
+                        <div class="stat-n" id="sFamily">0</div>
+                        <div class="stat-l">Familia</div>
+                    </div>
+                </div>
+                <div class="stat-card c-green">
+                    <div class="stat-ico"><i class="ri-user-smile-line"></i></div>
+                    <div>
+                        <div class="stat-n" id="sPersonal">0</div>
+                        <div class="stat-l">Personal</div>
+                    </div>
+                </div>
+                <div class="stat-card c-gray">
+                    <div class="stat-ico"><i class="ri-more-line"></i></div>
+                    <div>
+                        <div class="stat-n" id="sOther">0</div>
+                        <div class="stat-l">Otro</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACTS HEADER -->
+            <div class="ch">
+                <div class="ch-left">
+                    <h1 class="ch-title">Contactos</h1>
+                    <span class="ch-count" id="chCount">0 contactos</span>
+                </div>
+                <div class="ch-right">
+                    <div class="search-field">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar..." autocomplete="off" />
+                    </div>
+                    <button class="btn-filter-toggle" id="filterToggle">
+                        <i class="ri-equalizer-line"></i> Filtrar
+                    </button>
+                    <div class="view-switcher">
+                        <button class="vs-btn active" id="btnTable" title="Tabla"><i
+                                class="ri-list-check-2"></i></button>
+                        <button class="vs-btn" id="btnCards" title="Tarjetas"><i
+                                class="ri-layout-grid-line"></i></button>
+                    </div>
+                    <button class="btn-primary" id="btnNew">
+                        <i class="ri-add-line"></i> Agregar Contacto
+                    </button>
+                </div>
+            </div>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar hidden" id="filterBar">
+                <select id="catFilter">
+                    <option value="">Todas las categorías</option>
+                    <option value="Trabajo">Trabajo</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Familia">Familia</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <select id="sortSel">
+                    <option value="default">Orden original</option>
+                    <option value="az">A → Z</option>
+                    <option value="za">Z → A</option>
+                    <option value="fav">Favoritos primero</option>
+                    <option value="recent">Más recientes</option>
+                </select>
+                <label class="fav-only">
+                    <input type="checkbox" id="favOnly" />
+                    <span>Solo favoritos</span>
+                </label>
+                <div class="filter-io">
+                    <button class="btn-io" id="btnExport"><i class="ri-download-2-line"></i> Exportar</button>
+                    <label class="btn-io">
+                        <i class="ri-upload-2-line"></i> Importar
+                        <input type="file" id="btnImport" accept=".json" hidden />
+                    </label>
+                </div>
+            </div>
+
+            <!-- TABLE VIEW -->
+            <div class="table-wrap" id="tableView">
+                <table class="ctable">
+                    <thead>
+                        <tr>
+                            <th class="th-chk"><input type="checkbox" id="selAll" /></th>
+                            <th class="th-sort" data-sort="name">Nombre <i class="ri-arrow-up-down-line"></i></th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Empresa</th>
+                            <th class="th-sort" data-sort="date">Fecha de creación <i class="ri-arrow-up-down-line"></i></th>
+                            <th>Categoría</th>
+                            <th>Fav</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+                <div class="empty-state" id="emptyTable" style="display:none">
+                    <i class="ri-user-search-line"></i>
+                    <p>No se encontraron contactos</p>
+                    <button class="btn-primary sm" id="btnEmptyAdd"><i class="ri-add-line"></i> Agregar uno</button>
+                </div>
+            </div>
+
+            <!-- CARD VIEW -->
+            <div class="card-grid hidden" id="cardView"></div>
+
+        </main>
+    </div>
+
+    <!-- ═══════════════════════
+       MODAL — FORM
+  ═══════════════════════ -->
+    <div class="overlay" id="formOverlay">
+        <div class="modal" id="formModal">
+            <div class="modal-hd">
+                <h2 id="modalTitle">Agregar Contacto</h2>
+                <button class="modal-x" id="modalClose"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-bd">
+                <div class="av-row">
+                    <div class="av-preview" id="avPreview"><i class="ri-user-3-line"></i></div>
+                    <div class="av-btns">
+                        <label class="btn-upload">
+                            <i class="ri-camera-line"></i> Subir foto
+                            <input type="file" id="photoInput" accept="image/*" hidden />
+                        </label>
+                        <button class="btn-rm-photo" id="rmPhoto" style="display:none">
+                            <i class="ri-close-line"></i> Quitar
+                        </button>
+                    </div>
+                </div>
+                <div class="fgrid">
+                    <div class="fg full">
+                        <label>Nombre <span class="req">*</span></label>
+                        <input type="text" id="fName" placeholder="Ej. Ana García" />
+                        <span class="ferr" id="errName"></span>
+                    </div>
+                    <div class="fg">
+                        <label>Teléfono <span class="req">*</span></label>
+                        <input type="tel" id="fPhone" placeholder="+52 55 0000 0000" />
+                        <span class="ferr" id="errPhone"></span>
+                    </div>
+                    <div class="fg">
+                        <label>Correo</label>
+                        <input type="email" id="fEmail" placeholder="ana@mail.com" />
+                        <span class="ferr" id="errEmail"></span>
+                    </div>
+                    <div class="fg">
+                        <label>Empresa</label>
+                        <input type="text" id="fCompany" placeholder="Empresa S.A." />
+                    </div>
+                    <div class="fg">
+                        <label>Categoría</label>
+                        <select id="fCat">
+                            <option value="Personal">Personal</option>
+                            <option value="Trabajo">Trabajo</option>
+                            <option value="Familia">Familia</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="fg full">
+                        <label class="fav-label">
+                            <input type="checkbox" id="fFav" />
+                            <span><i class="ri-star-fill"></i> Marcar como favorito</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-ghost" id="btnCancel">Cancelar</button>
+                <button class="btn-primary" id="btnSave">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════
+       MODAL — CONFIRM DELETE
+  ═══════════════════════ -->
+    <div class="overlay" id="delOverlay">
+        <div class="modal modal-sm">
+            <div class="modal-hd">
+                <h2>Eliminar contacto</h2>
+                <button class="modal-x" id="delClose"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-bd">
+                <div class="del-icon"><i class="ri-delete-bin-6-line"></i></div>
+                <p class="del-txt">¿Deseas eliminar a <strong id="delName"></strong>? Esta acción es permanente.</p>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-ghost" id="delNo">Cancelar</button>
+                <button class="btn-danger" id="delYes">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW MENU -->
+    <div class="row-menu" id="rowMenu">
+        <button class="rm-item" id="rmEdit"><i class="ri-pencil-line"></i> Editar</button>
+        <button class="rm-item" id="rmFav"><i class="ri-star-line"></i> Toggle favorito</button>
+        <div class="rm-sep"></div>
+        <button class="rm-item danger" id="rmDel"><i class="ri-delete-bin-line"></i> Eliminar</button>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
